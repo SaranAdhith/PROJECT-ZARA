@@ -12,9 +12,6 @@ Zara is an embeddable AI sales assistant that answers visitor questions about [C
 ### Live Chat
 ![Zara answering a question](screenshots/chat.png)
 
-### Mobile View
-![Zara on mobile](screenshots/mobile.png)
-
 ---
 
 ## Features
