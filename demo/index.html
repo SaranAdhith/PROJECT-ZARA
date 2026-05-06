@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zara AI — CommunityTracker.ai</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #6C47FF;
+      --primary-hover: #5535E8;
+      --primary-dim: rgba(108,71,255,0.08);
+      --sidebar-w: 268px;
+      --sidebar-bg: #F7F5FF;
+      --sidebar-border: #EAE5FF;
+      --bg: #ffffff;
+      --text: #111827;
+      --text-2: #6B7280;
+      --text-3: #9CA3AF;
+      --border: #E5E7EB;
+      --surface: #F9FAFB;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── SIDEBAR ─────────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--sidebar-border);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      transition: transform 0.25s ease;
+      z-index: 95;
+    }
+
+    .sidebar-head {
+      padding: 22px 18px 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      color: inherit;
+      margin-bottom: 18px;
+    }
+
+    .brand-icon {
+      width: 38px; height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #6C47FF, #9C7BFF);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 19px; flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(108,71,255,0.3);
+    }
+
+    .brand-name { font-size: 15.5px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .brand-sub  { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+    .new-chat-btn {
+      width: 100%;
+      padding: 9px 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none; border-radius: 10px;
+      font-size: 13.5px; font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: background 0.15s, transform 0.1s;
+      font-family: inherit;
+    }
+    .new-chat-btn:hover { background: var(--primary-hover); }
+    .new-chat-btn:active { transform: scale(0.98); }
+
+    .sidebar-section { padding: 18px 14px 8px; }
+
+    .section-label {
+      font-size: 10.5px; font-weight: 700;
+      color: var(--text-3); text-transform: uppercase;
+      letter-spacing: 0.07em; padding: 0 4px;
+      margin-bottom: 6px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 8px 10px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 13px; color: var(--text-2);
+      transition: background 0.12s, color 0.12s;
+      line-height: 1.35;
+      border: none; background: none; width: 100%; text-align: left;
+      font-family: inherit;
+    }
+    .nav-item:hover { background: rgba(108,71,255,0.09); color: var(--primary); }
+    .nav-item .nav-icon { font-size: 15px; flex-shrink: 0; width: 20px; text-align: center; }
+
+    .sidebar-divider { height: 1px; background: var(--sidebar-border); margin: 10px 14px; }
+
+    .sidebar-foot {
+      margin-top: auto;
+      padding: 14px 14px 18px;
+      border-top: 1px solid var(--sidebar-border);
+    }
+
+    .foot-link {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; border-radius: 9px;
+      font-size: 12.5px; color: var(--text-2);
+      text-decoration: none;
+      transition: background 0.12s, color 0.12s;
+      margin-bottom: 2px;
+    }
+    .foot-link:hover { background: rgba(108,71,255,0.09); color: var(--primary); }
+
+    .model-pill {
+      display: flex; align-items: center; gap: 7px;
+      margin-top: 10px; padding: 7px 10px;
+      background: #fff; border: 1px solid var(--sidebar-border);
+      border-radius: 9px; font-size: 11.5px; color: var(--text-3);
+    }
+    .status-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #10B981; flex-shrink: 0;
+      animation: glow 2s ease-in-out infinite;
+    }
+    @keyframes glow { 0%,100%{opacity:1} 50%{opacity:0.45} }
+
+    /* ── MAIN ────────────────────────────────────────── */
+    .main {
+      flex: 1; display: flex; flex-direction: column;
+      height: 100vh; overflow: hidden; position: relative;
+      min-width: 0;
+    }
+
+    /* ── TOP BAR (desktop: hidden, mobile: visible) ── */
+    .topbar {
+      display: none;
+      align-items: center; gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .topbar-brand {
+      display: flex; align-items: center; gap: 9px;
+      flex: 1; min-width: 0;
+    }
+
+    .menu-btn {
+      width: 34px; height: 34px;
+      border-radius: 8px; background: none;
+      border: 1px solid var(--border);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--text-2);
+      transition: background 0.12s;
+    }
+    .menu-btn:hover { background: var(--surface); }
+
+    /* ── MESSAGES ────────────────────────────────────── */
+    .messages {
+      flex: 1; overflow-y: auto;
+      padding-bottom: 148px;
+      scroll-behavior: smooth;
+    }
+    .messages::-webkit-scrollbar { width: 5px; }
+    .messages::-webkit-scrollbar-track { background: transparent; }
+    .messages::-webkit-scrollbar-thumb { background: #E0E0E0; border-radius: 10px; }
+
+    /* ── WELCOME ─────────────────────────────────────── */
+    .welcome {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: calc(100vh - 148px);
+      padding: 48px 24px 24px;
+      text-align: center;
+    }
+
+    .welcome-avatar {
+      width: 80px; height: 80px; border-radius: 24px;
+      background: linear-gradient(135deg, #6C47FF, #9C7BFF);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 42px; margin-bottom: 24px;
+      box-shadow: 0 12px 40px rgba(108,71,255,0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)}
+    }
+
+    .welcome h2 {
+      font-size: 30px; font-weight: 800;
+      background: linear-gradient(135deg, #6C47FF, #9C7BFF);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 10px;
+    }
+
+    .welcome-sub {
+      font-size: 15.5px; color: var(--text-2);
+      max-width: 440px; line-height: 1.65; margin-bottom: 40px;
+    }
+
+    .cards-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; max-width: 580px; width: 100%;
+    }
+
+    .card {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 18px 16px;
+      cursor: pointer; text-align: left;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+    .card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 6px 24px rgba(108,71,255,0.13);
+      transform: translateY(-2px);
+    }
+    .card:active { transform: translateY(0); }
+    .card-ico  { font-size: 22px; margin-bottom: 9px; }
+    .card-ttl  { font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .card-desc { font-size: 12px; color: var(--text-2); line-height: 1.45; }
+
+    /* ── MESSAGE ROWS ────────────────────────────────── */
+    .msg-row {
+      display: flex; gap: 14px;
+      padding: 20px 28px;
+      max-width: 860px; margin: 0 auto; width: 100%;
+      animation: fadein 0.2s ease;
+    }
+    @keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+    .msg-row.user { flex-direction: row-reverse; }
+
+    .msg-avatar {
+      width: 34px; height: 34px; border-radius: 10px;
+      flex-shrink: 0; display: flex; align-items: center;
+      justify-content: center; font-size: 16px; margin-top: 1px;
+      position: sticky; top: 0; /* keeps avatar visible while scrolling long messages */
+    }
+    .msg-row.bot  .msg-avatar { background: linear-gradient(135deg,#6C47FF,#9C7BFF); color:#fff; }
+    .msg-row.user .msg-avatar { background: var(--surface); border: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--text-2); }
+
+    .msg-body { flex: 1; min-width: 0; }
+    .msg-row.user .msg-body { display: flex; justify-content: flex-end; }
+
+    .msg-name {
+      font-size: 12px; font-weight: 600; color: var(--text-3);
+      margin-bottom: 5px; letter-spacing: 0.01em;
+    }
+
+    /* Bot text: no bubble — clean like Claude */
+    .bot-text {
+      font-size: 14.5px; line-height: 1.72;
+      color: var(--text);
+    }
+
+    /* User bubble */
+    .user-bubble {
+      background: var(--primary);
+      color: #fff; padding: 11px 16px;
+      border-radius: 18px 18px 5px 18px;
+      font-size: 14.5px; line-height: 1.6;
+      max-width: 72%; word-break: break-word;
+    }
+
+    /* ── MARKDOWN in bot-text ──────────────────────── */
+    .bot-text p          { margin: 0 0 10px; }
+    .bot-text p:last-child { margin: 0; }
+    .bot-text strong     { font-weight: 650; }
+    .bot-text em         { font-style: italic; }
+    .bot-text h2         { font-size: 15.5px; font-weight: 700; margin: 14px 0 6px; }
+    .bot-text h3         { font-size: 14.5px; font-weight: 700; margin: 12px 0 5px; }
+    .bot-text ul, .bot-text ol { padding-left: 22px; margin: 8px 0; }
+    .bot-text li         { margin-bottom: 5px; }
+    .bot-text code       {
+      background: var(--primary-dim); color: var(--primary);
+      padding: 2px 6px; border-radius: 5px;
+      font-family: 'SF Mono','Fira Code',monospace; font-size: 13px;
+    }
+
+    .code-wrap {
+      background: #1a1b2e; border-radius: 12px;
+      margin: 12px 0; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .code-hdr {
+      padding: 9px 14px; background: #24253e;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .code-lang { font-size: 11px; color: #7C7FA6; font-family: monospace; }
+    .copy-btn {
+      font-size: 11px; color: #7C7FA6;
+      background: none; border: 1px solid rgba(255,255,255,0.1);
+      padding: 3px 10px; border-radius: 5px; cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .code-wrap pre {
+      padding: 16px; overflow-x: auto;
+      font-family: 'SF Mono','Fira Code','Cascadia Code',monospace;
+      font-size: 13px; line-height: 1.65; color: #CDD6F4;
+    }
+
+    /* ── TYPING CURSOR ───────────────────────────────── */
+    .cursor {
+      display: inline-block; width: 2px; height: 16px;
+      background: var(--primary); margin-left: 2px;
+      vertical-align: middle; border-radius: 1px;
+      animation: blink 0.75s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── TYPING DOTS ─────────────────────────────────── */
+    .typing-dots {
+      display: flex; gap: 5px; align-items: center;
+      padding: 6px 0;
+    }
+    .typing-dots span {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #C4B5FD; opacity: 0.6;
+      animation: bounce 1.3s ease-in-out infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.16s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.32s; }
+    @keyframes bounce {
+      0%,60%,100%{transform:translateY(0);opacity:0.6}
+      30%{transform:translateY(-7px);opacity:1}
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────── */
+    .thread-start {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 28px 0; max-width: 860px; margin: 0 auto; width: 100%;
+    }
+    .thread-start span { font-size: 11.5px; color: var(--text-3); white-space: nowrap; }
+    .thread-start::before, .thread-start::after {
+      content:''; flex:1; height:1px; background: var(--border);
+    }
+
+    /* ── INPUT AREA ──────────────────────────────────── */
+    .input-area {
+      position: fixed; bottom: 0;
+      left: var(--sidebar-w); right: 0;
+      padding: 12px 24px 22px;
+      background: linear-gradient(to top, #fff 65%, rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .input-box {
+      max-width: 860px; margin: 0 auto;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.09), 0 1px 4px rgba(0,0,0,0.05);
+      display: flex; align-items: flex-end; gap: 8px;
+      padding: 11px 12px 11px 18px;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      pointer-events: all;
+    }
+    .input-box:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 4px 28px rgba(108,71,255,0.14), 0 0 0 3px rgba(108,71,255,0.07);
+    }
+
+    #chatInput {
+      flex: 1; border: none; outline: none;
+      font-size: 14.5px; line-height: 1.55;
+      resize: none; min-height: 26px; max-height: 200px;
+      font-family: inherit; color: var(--text);
+      background: transparent;
+    }
+    #chatInput::placeholder { color: var(--text-3); }
+
+    .send-btn {
+      width: 38px; height: 38px; flex-shrink: 0;
+      border-radius: 11px;
+      background: var(--primary); color: #fff;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, transform 0.1s, opacity 0.15s;
+    }
+    .send-btn:disabled { background: #E5E7EB; cursor: not-allowed; }
+    .send-btn:not(:disabled):hover { background: var(--primary-hover); transform: scale(1.06); }
+    .send-btn:not(:disabled):active { transform: scale(0.97); }
+
+    .input-hint {
+      text-align: center; font-size: 11px; color: var(--text-3);
+      margin-top: 9px; pointer-events: none;
+    }
+    kbd {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 4px; padding: 1px 5px;
+      font-size: 10.5px; font-family: inherit;
+    }
+
+    /* ── OVERLAY (mobile) ─────────────────────────────── */
+    .overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35); z-index: 90;
+      backdrop-filter: blur(2px);
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 820px) {
+      .sidebar {
+        position: fixed; top: 0; left: 0; bottom: 0;
+        transform: translateX(-100%);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.1);
+      }
+      .sidebar.open { transform: translateX(0); }
+      .overlay.open { display: block; }
+      .topbar { display: flex; }
+      .input-area { left: 0; }
+      .msg-row { padding: 16px 18px; }
+      .thread-start { padding: 16px 18px 0; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .welcome { padding: 32px 18px 24px; }
+      .welcome h2 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mobile overlay -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────── -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-head">
+    <a class="brand" href="https://communitytracker.ai" target="_blank" rel="noopener">
+      <div class="brand-icon">✦</div>
+      <div>
+        <div class="brand-name">Zara</div>
+        <div class="brand-sub">CommunityTracker.ai</div>
+      </div>
+    </a>
+    <button class="new-chat-btn" onclick="newChat()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New Chat
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="section-label">Quick Questions</div>
+
+    <button class="nav-item" onclick="ask('What is CommunityTracker.ai and what problem does it solve?')">
+      <span class="nav-icon">🔍</span> What is CommunityTracker?
+    </button>
+    <button class="nav-item" onclick="ask('What pricing plans are available and is there a free trial?')">
+      <span class="nav-icon">💳</span> Pricing &amp; Plans
+    </button>
+    <button class="nav-item" onclick="ask('Which communities and platforms do you monitor?')">
+      <span class="nav-icon">🌐</span> Supported Platforms
+    </button>
+    <button class="nav-item" onclick="ask('How does intent detection work and why is it better than keyword alerts?')">
+      <span class="nav-icon">🎯</span> Intent Detection
+    </button>
+    <button class="nav-item" onclick="ask('How does the Share of Voice feature work?')">
+      <span class="nav-icon">📊</span> Share of Voice
+    </button>
+    <button class="nav-item" onclick="ask('How do action workflows and integrations work? What tools do you connect with?')">
+      <span class="nav-icon">⚡</span> Workflows &amp; Integrations
+    </button>
+    <button class="nav-item" onclick="ask('Which plan would you recommend for a startup founder doing early sales?')">
+      <span class="nav-icon">🚀</span> Which plan is right for me?
+    </button>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-foot">
+    <a class="foot-link" href="https://communitytracker.ai" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Visit CommunityTracker.ai
+    </a>
+    <a class="foot-link" href="https://communitytracker.ai/pricing" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      View Pricing
+    </a>
+    <div class="model-pill">
+      <div class="status-dot"></div>
+      Llama 3.3 70B · Groq
+    </div>
+  </div>
+</aside>
+
+<!-- ── MAIN ────────────────────────────────────────────── -->
+<main class="main">
+
+  <!-- Mobile topbar -->
+  <div class="topbar">
+    <button class="menu-btn" onclick="openSidebar()">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-brand">
+      <div class="brand-icon" style="width:30px;height:30px;border-radius:8px;font-size:15px">✦</div>
+      <div>
+        <div style="font-size:14px;font-weight:700">Zara</div>
+        <div style="font-size:10.5px;color:var(--text-3)">CommunityTracker.ai</div>
+      </div>
+    </div>
+    <button class="menu-btn" onclick="newChat()" title="New chat">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages" id="messages">
+    <div class="welcome" id="welcome">
+      <div class="welcome-avatar">✦</div>
+      <h2>Hi, I'm Zara</h2>
+      <p class="welcome-sub">Your AI guide to CommunityTracker.ai. Ask me anything about features, pricing, supported platforms, or how community intelligence can power your GTM strategy.</p>
+      <div class="cards-grid">
+        <div class="card" onclick="ask('What is CommunityTracker.ai and what problem does it solve for GTM teams?')">
+          <div class="card-ico">🔍</div>
+          <div class="card-ttl">What is CommunityTracker?</div>
+          <div class="card-desc">Learn what the platform does and who it's built for</div>
+        </div>
+        <div class="card" onclick="ask('What pricing plans do you offer and is there a free trial?')">
+          <div class="card-ico">💳</div>
+          <div class="card-ttl">Pricing &amp; Free Trial</div>
+          <div class="card-desc">Plans start at $29/mo — no credit card required</div>
+        </div>
+        <div class="card" onclick="ask('Which social platforms and communities do you monitor?')">
+          <div class="card-ico">🌐</div>
+          <div class="card-ttl">Supported Platforms</div>
+          <div class="card-desc">Reddit, LinkedIn, Discord, X/Twitter and 9+ more</div>
+        </div>
+        <div class="card" onclick="ask('Which plan would you recommend for a startup founder doing early-stage sales?')">
+          <div class="card-ico">🚀</div>
+          <div class="card-ttl">Which plan is right for me?</div>
+          <div class="card-desc">Get a personalized recommendation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-area">
+    <div class="input-box">
+      <textarea id="chatInput" rows="1"
+        placeholder="Ask Zara anything about CommunityTracker…"
+        onkeydown="onKey(event)" oninput="onInput()">
+      </textarea>
+      <button class="send-btn" id="sendBtn" disabled onclick="submit()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+    <div class="input-hint">
+      <kbd>Enter</kbd> to send &nbsp;·&nbsp; <kbd>Shift+Enter</kbd> for new line
+    </div>
+  </div>
+</main>
+
+<script>
+  const API = 'http://localhost:3001';
+  let sessionId = null;
+  let busy = false;
+  let started = false;
+
+  // ── Session ──────────────────────────────────────────────
+  (async () => {
+    try {
+      const r = await fetch(`${API}/api/session`, { method: 'POST' });
+      sessionId = (await r.json()).sessionId;
+    } catch { console.warn('[Zara] Backend unreachable'); }
+  })();
+
+  // ── Markdown ─────────────────────────────────────────────
+  function md(raw) {
+    // 1. Pull out code blocks
+    const blocks = [];
+    let out = raw.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+      const safe = code.trim().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      blocks.push(
+        `<div class="code-wrap"><div class="code-hdr"><span class="code-lang">${lang||'code'}</span>` +
+        `<button class="copy-btn" onclick="doCopy(this)">Copy</button></div>` +
+        `<pre><code>${safe}</code></pre></div>`
+      );
+      return `\x02BLOCK${blocks.length-1}\x03`;
+    });
+
+    // 2. Escape HTML in prose
+    out = out.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+    // 3. Inline: bold, italic, inline-code
+    out = out
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+
+    // 4. Block elements (per-line)
+    const lines = out.split('\n');
+    const parts = [];
+    let listBuf = [];
+
+    const flushList = () => {
+      if (listBuf.length) { parts.push(`<ul>${listBuf.join('')}</ul>`); listBuf = []; }
+    };
+
+    for (const line of lines) {
+      const h3 = line.match(/^###\s+(.*)/);
+      const h2 = line.match(/^##\s+(.*)/);
+      const li = line.match(/^[-*]\s+(.*)/);
+      const li2 = line.match(/^\d+\.\s+(.*)/);
+      if (h3)  { flushList(); parts.push(`<h3>${h3[1]}</h3>`); }
+      else if (h2)  { flushList(); parts.push(`<h2>${h2[1]}</h2>`); }
+      else if (li)  { listBuf.push(`<li>${li[1]}</li>`); }
+      else if (li2) { listBuf.push(`<li>${li2[1]}</li>`); }
+      else if (line.trim() === '') { flushList(); parts.push(''); }
+      else          { flushList(); parts.push(line); }
+    }
+    flushList();
+
+    // 5. Join into paragraphs
+    out = parts.join('\n')
+      .split(/\n{2,}/)
+      .map(b => {
+        b = b.trim();
+        if (!b) return '';
+        if (/^<(h[23]|ul|div)/.test(b)) return b;
+        return `<p>${b.replace(/\n/g,'<br>')}</p>`;
+      }).join('\n');
+
+    // 6. Restore code blocks
+    blocks.forEach((cb, i) => { out = out.replace(`\x02BLOCK${i}\x03`, cb); });
+
+    return out;
+  }
+
+  function doCopy(btn) {
+    const code = btn.closest('.code-wrap').querySelector('code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1600);
+    });
+  }
+
+  // ── DOM helpers ──────────────────────────────────────────
+  const $msgs = () => document.getElementById('messages');
+
+  function scroll() {
+    const el = $msgs();
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function hideWelcome() {
+    if (!started) {
+      document.getElementById('welcome').style.display = 'none';
+      const div = document.createElement('div');
+      div.className = 'thread-start';
+      div.innerHTML = '<span>Conversation started</span>';
+      $msgs().appendChild(div);
+      started = true;
+    }
+  }
+
+  function addUserMsg(text) {
+    hideWelcome();
+    const row = document.createElement('div');
+    row.className = 'msg-row user';
+    row.innerHTML = `
+      <div class="msg-avatar">You</div>
+      <div class="msg-body">
+        <div class="user-bubble"></div>
+      </div>`;
+    row.querySelector('.user-bubble').textContent = text;
+    $msgs().appendChild(row);
+    scroll();
+  }
+
+  function addTyping() {
+    hideWelcome();
+    const row = document.createElement('div');
+    row.id = 'typing';
+    row.className = 'msg-row bot';
+    row.innerHTML = `
+      <div class="msg-avatar">✦</div>
+      <div class="msg-body">
+        <div class="msg-name">Zara</div>
+        <div class="bot-text">
+          <div class="typing-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>`;
+    $msgs().appendChild(row);
+    scroll();
+  }
+
+  function removeTyping() {
+    document.getElementById('typing')?.remove();
+  }
+
+  // ── Send ─────────────────────────────────────────────────
+  async function ask(text) {
+    if (window.innerWidth < 820) closeSidebar();
+    await send(text);
+  }
+
+  async function send(text) {
+    text = text.trim();
+    if (!text || busy) return;
+    if (!sessionId) {
+      try {
+        const r = await fetch(`${API}/api/session`, { method: 'POST' });
+        sessionId = (await r.json()).sessionId;
+      } catch {
+        alert('Cannot reach the Zara backend. Make sure server is running on port 3001.');
+        return;
+      }
+    }
+
+    busy = true;
+    document.getElementById('chatInput').value = '';
+    document.getElementById('chatInput').style.height = 'auto';
+    document.getElementById('sendBtn').disabled = true;
+
+    addUserMsg(text);
+    addTyping();
+
+    try {
+      const res = await fetch(`${API}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text, sessionId }),
+      });
+
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        throw new Error(e.error || `HTTP ${res.status}`);
+      }
+
+      removeTyping();
+
+      // Create streaming bot row
+      const row = document.createElement('div');
+      row.className = 'msg-row bot';
+      row.innerHTML = `
+        <div class="msg-avatar">✦</div>
+        <div class="msg-body">
+          <div class="msg-name">Zara</div>
+          <div class="bot-text" id="stream-out"></div>
+        </div>`;
+      $msgs().appendChild(row);
+      const out = document.getElementById('stream-out');
+      out.innerHTML = '<span class="cursor"></span>';
+
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let buf = '', raw = '';
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split('\n');
+        buf = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const p = line.slice(6).trim();
+          if (p === '[DONE]') break;
+          try {
+            const j = JSON.parse(p);
+            if (j.error) throw new Error(j.error);
+            if (j.text) { raw += j.text; out.innerHTML = md(raw) + '<span class="cursor"></span>'; scroll(); }
+          } catch {}
+        }
+      }
+
+      // Remove cursor, finalize
+      out.innerHTML = md(raw);
+      scroll();
+
+    } catch (err) {
+      removeTyping();
+      const row = document.createElement('div');
+      row.className = 'msg-row bot';
+      row.innerHTML = `
+        <div class="msg-avatar">✦</div>
+        <div class="msg-body">
+          <div class="msg-name">Zara</div>
+          <div class="bot-text"><p style="color:#EF4444">⚠️ ${err.message || 'Something went wrong. Please try again.'}</p></div>
+        </div>`;
+      $msgs().appendChild(row);
+      scroll();
+    } finally {
+      busy = false;
+      document.getElementById('chatInput').focus();
+    }
+  }
+
+  function submit() { send(document.getElementById('chatInput').value); }
+
+  // ── Input ─────────────────────────────────────────────────
+  function onInput() {
+    const el = document.getElementById('chatInput');
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 200) + 'px';
+    document.getElementById('sendBtn').disabled = !el.value.trim() || busy;
+  }
+
+  function onKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); }
+  }
+
+  // ── Sidebar ───────────────────────────────────────────────
+  function openSidebar()  {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('overlay').classList.add('open');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+  }
+
+  // ── New Chat ──────────────────────────────────────────────
+  async function newChat() {
+    sessionId = null; busy = false; started = false;
+    const el = $msgs();
+    el.innerHTML = `
+      <div class="welcome" id="welcome">
+        <div class="welcome-avatar">✦</div>
+        <h2>Hi, I'm Zara</h2>
+        <p class="welcome-sub">Your AI guide to CommunityTracker.ai. Ask me anything about features, pricing, supported platforms, or how community intelligence can power your GTM strategy.</p>
+        <div class="cards-grid">
+          <div class="card" onclick="ask('What is CommunityTracker.ai and what problem does it solve for GTM teams?')">
+            <div class="card-ico">🔍</div>
+            <div class="card-ttl">What is CommunityTracker?</div>
+            <div class="card-desc">Learn what the platform does and who it's built for</div>
+          </div>
+          <div class="card" onclick="ask('What pricing plans do you offer and is there a free trial?')">
+            <div class="card-ico">💳</div>
+            <div class="card-ttl">Pricing &amp; Free Trial</div>
+            <div class="card-desc">Plans start at $29/mo — no credit card required</div>
+          </div>
+          <div class="card" onclick="ask('Which social platforms and communities do you monitor?')">
+            <div class="card-ico">🌐</div>
+            <div class="card-ttl">Supported Platforms</div>
+            <div class="card-desc">Reddit, LinkedIn, Discord, X/Twitter and 9+ more</div>
+          </div>
+          <div class="card" onclick="ask('Which plan would you recommend for a startup founder doing early-stage sales?')">
+            <div class="card-ico">🚀</div>
+            <div class="card-ttl">Which plan is right for me?</div>
+            <div class="card-desc">Get a personalized recommendation</div>
+          </div>
+        </div>
+      </div>`;
+    try {
+      const r = await fetch(`${API}/api/session`, { method: 'POST' });
+      sessionId = (await r.json()).sessionId;
+    } catch {}
+    document.getElementById('chatInput').focus();
+  }
+</script>
+</body>
+</html>
