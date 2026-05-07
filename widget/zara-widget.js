@@ -7,13 +7,13 @@
     #zara-widget-btn {
       position: fixed; bottom: 24px; right: 24px; z-index: 99998;
       width: 58px; height: 58px; border-radius: 50%;
-      background: linear-gradient(135deg, #6C47FF, #9C7BFF);
-      border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(108,71,255,0.45);
+      background: #25D366;
+      border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(37,211,102,0.4);
       display: flex; align-items: center; justify-content: center;
       transition: transform 0.2s, box-shadow 0.2s;
       font-size: 26px; color: #fff;
     }
-    #zara-widget-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(108,71,255,0.55); }
+    #zara-widget-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
     #zara-widget-btn .zara-close-ico { display: none; font-size: 20px; }
     #zara-widget-btn.open .zara-chat-ico { display: none; }
     #zara-widget-btn.open .zara-close-ico { display: flex; }
@@ -35,7 +35,7 @@
 
     /* Header */
     .zw-header {
-      background: linear-gradient(135deg, #6C47FF, #9C7BFF);
+      background: #1E1B4B;
       padding: 14px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
     }
     .zw-avatar {
@@ -47,7 +47,7 @@
     .zw-header-info { flex: 1; }
     .zw-name { font-size: 14px; font-weight: 700; color: #fff; }
     .zw-status { font-size: 11px; color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
-    .zw-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; flex-shrink: 0; animation: zw-glow 2s ease-in-out infinite; }
+    .zw-dot { width: 6px; height: 6px; border-radius: 50%; background: #25D366; flex-shrink: 0; animation: zw-glow 2s ease-in-out infinite; }
     @keyframes zw-glow { 0%,100%{opacity:1} 50%{opacity:0.4} }
     .zw-new-btn {
       background: rgba(255,255,255,0.2); border: none; color: #fff;
@@ -72,25 +72,23 @@
     }
     .zw-welcome-avatar {
       width: 54px; height: 54px; border-radius: 16px;
-      background: linear-gradient(135deg, #6C47FF, #9C7BFF);
+      background: #1E1B4B;
       display: flex; align-items: center; justify-content: center;
       font-size: 28px; margin-bottom: 4px;
-      box-shadow: 0 8px 24px rgba(108,71,255,0.3);
+      box-shadow: 0 8px 24px rgba(30,27,75,0.2);
     }
     .zw-welcome h3 {
-      font-size: 16px; font-weight: 800; margin: 0;
-      background: linear-gradient(135deg, #6C47FF, #9C7BFF);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      font-size: 16px; font-weight: 800; margin: 0; color: #1E1B4B;
     }
     .zw-welcome p { font-size: 12px; color: #6B7280; line-height: 1.55; margin: 0; }
     .zw-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 4px; }
     .zw-chip {
-      background: #F3F0FF; color: #6C47FF; border: 1px solid #E0D9FF;
-      border-radius: 20px; padding: 5px 11px; font-size: 11.5px;
-      cursor: pointer; transition: background 0.15s; white-space: nowrap;
+      background: #fff; color: #111827; border: 1px solid #E5E7EB;
+      border-radius: 9999px; padding: 5px 12px; font-size: 11.5px;
+      cursor: pointer; transition: background 0.15s, border-color 0.15s; white-space: nowrap;
       font-family: inherit;
     }
-    .zw-chip:hover { background: #E9E3FF; }
+    .zw-chip:hover { background: #F9FAFB; border-color: #111827; }
 
     /* Message rows */
     .zw-row { display: flex; gap: 8px; align-items: flex-start; }
@@ -99,7 +97,7 @@
       width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center; font-size: 14px;
     }
-    .zw-row.bot .zw-msg-avatar { background: linear-gradient(135deg,#6C47FF,#9C7BFF); color: #fff; }
+    .zw-row.bot .zw-msg-avatar { background: #1E1B4B; color: #fff; }
     .zw-row.user .zw-msg-avatar { background: #F3F4F6; border: 1px solid #E5E7EB; font-size: 10px; font-weight: 700; color: #6B7280; }
     .zw-bubble {
       max-width: 82%; font-size: 13px; line-height: 1.6;
@@ -110,7 +108,7 @@
       border-radius: 4px 16px 16px 16px;
     }
     .zw-row.user .zw-bubble {
-      background: #6C47FF; color: #fff;
+      background: #000; color: #fff;
       border-radius: 16px 4px 16px 16px;
     }
     .zw-bubble strong { font-weight: 650; }
@@ -137,7 +135,7 @@
       border-radius: 14px; padding: 8px 10px 8px 14px;
       transition: border-color 0.18s;
     }
-    .zw-input-box:focus-within { border-color: #6C47FF; background: #fff; }
+    .zw-input-box:focus-within { border-color: #000; background: #fff; }
     #zw-input {
       flex: 1; border: none; outline: none; background: transparent;
       font-size: 13px; line-height: 1.5; resize: none;
@@ -145,13 +143,13 @@
     }
     #zw-input::placeholder { color: #9CA3AF; }
     .zw-send {
-      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
-      background: #6C47FF; color: #fff; border: none; cursor: pointer;
+      width: 32px; height: 32px; border-radius: 9999px; flex-shrink: 0;
+      background: #000; color: #fff; border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       transition: background 0.15s, transform 0.1s, opacity 0.15s;
     }
     .zw-send:disabled { background: #E5E7EB; cursor: not-allowed; }
-    .zw-send:not(:disabled):hover { background: #5535E8; transform: scale(1.06); }
+    .zw-send:not(:disabled):hover { background: #1a1a1a; transform: scale(1.06); }
     .zw-footer {
       text-align: center; font-size: 10px; color: #D1D5DB; margin-top: 6px;
     }
