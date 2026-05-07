@@ -21,7 +21,7 @@
     #zara-widget-panel {
       position: fixed; bottom: 96px; right: 24px; z-index: 99997;
       width: 370px; height: 560px;
-      background: #fff; border-radius: 20px;
+      background: #1E1B4B; border-radius: 20px;
       box-shadow: 0 12px 48px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
       display: flex; flex-direction: column; overflow: hidden;
       transform: scale(0.92) translateY(16px); opacity: 0;
@@ -35,7 +35,10 @@
 
     /* Header */
     .zw-header {
-      background: #1E1B4B;
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
       padding: 14px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
     }
     .zw-avatar {
@@ -61,6 +64,7 @@
       flex: 1; overflow-y: auto; padding: 14px 14px 8px;
       display: flex; flex-direction: column; gap: 12px;
       scroll-behavior: smooth;
+      background: #fff;
     }
     .zw-messages::-webkit-scrollbar { width: 4px; }
     .zw-messages::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 10px; }
@@ -69,13 +73,29 @@
     .zw-welcome {
       display: flex; flex-direction: column; align-items: center;
       text-align: center; padding: 16px 8px 8px; gap: 8px;
+      position: relative; overflow: hidden;
+    }
+    /* Decorative floating boxes — matches CommunityTracker.ai website background */
+    .zw-welcome::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(30,27,75,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,27,75,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      border-radius: 8px;
+    }
+    .zw-welcome > * { position: relative; z-index: 1; }
+    .zw-box-dec {
+      position: absolute; border-radius: 6px; z-index: 0;
+      background: rgba(30,27,75,0.05); border: 1px solid rgba(30,27,75,0.08);
     }
     .zw-welcome-avatar {
       width: 54px; height: 54px; border-radius: 16px;
-      background: #1E1B4B;
+      background: #25D366;
       display: flex; align-items: center; justify-content: center;
       font-size: 28px; margin-bottom: 4px;
-      box-shadow: 0 8px 24px rgba(30,27,75,0.2);
+      box-shadow: 0 8px 24px rgba(37,211,102,0.3);
     }
     .zw-welcome h3 {
       font-size: 16px; font-weight: 800; margin: 0; color: #1E1B4B;
@@ -128,6 +148,7 @@
     /* Input */
     .zw-input-wrap {
       padding: 10px 12px 14px; border-top: 1px solid #F3F4F6; flex-shrink: 0;
+      background: #fff;
     }
     .zw-input-box {
       display: flex; align-items: flex-end; gap: 8px;
@@ -175,6 +196,10 @@
     </div>
     <div class="zw-messages" id="zw-messages">
       <div class="zw-welcome" id="zw-welcome">
+        <div class="zw-box-dec" style="width:44px;height:44px;top:12px;left:18px;transform:rotate(8deg)"></div>
+        <div class="zw-box-dec" style="width:28px;height:28px;top:28px;right:24px;transform:rotate(-6deg)"></div>
+        <div class="zw-box-dec" style="width:36px;height:36px;bottom:30px;left:12px;transform:rotate(12deg)"></div>
+        <div class="zw-box-dec" style="width:22px;height:22px;bottom:20px;right:16px;transform:rotate(-10deg)"></div>
         <div class="zw-welcome-avatar">✦</div>
         <h3>Hi, I'm Zara!</h3>
         <p>Ask me anything about CommunityTracker — features, pricing, or which plan fits your team.</p>
@@ -237,6 +262,10 @@
   document.getElementById('zw-new').addEventListener('click', async () => {
     messagesEl.innerHTML = `
       <div class="zw-welcome" id="zw-welcome">
+        <div class="zw-box-dec" style="width:44px;height:44px;top:12px;left:18px;transform:rotate(8deg)"></div>
+        <div class="zw-box-dec" style="width:28px;height:28px;top:28px;right:24px;transform:rotate(-6deg)"></div>
+        <div class="zw-box-dec" style="width:36px;height:36px;bottom:30px;left:12px;transform:rotate(12deg)"></div>
+        <div class="zw-box-dec" style="width:22px;height:22px;bottom:20px;right:16px;transform:rotate(-10deg)"></div>
         <div class="zw-welcome-avatar">✦</div>
         <h3>Hi, I'm Zara!</h3>
         <p>Ask me anything about CommunityTracker — features, pricing, or which plan fits your team.</p>
