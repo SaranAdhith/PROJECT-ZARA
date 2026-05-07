@@ -74,8 +74,9 @@
       display: flex; flex-direction: column; align-items: center;
       text-align: center; padding: 16px 8px 8px; gap: 8px;
       position: relative; overflow: hidden;
+      flex: 1; min-height: 100%;
     }
-    /* Decorative floating boxes — matches CommunityTracker.ai website background */
+    /* Decorative grid — matches CommunityTracker.ai website background */
     .zw-welcome::before {
       content: '';
       position: absolute; inset: 0; pointer-events: none; z-index: 0;
@@ -83,12 +84,11 @@
         linear-gradient(rgba(30,27,75,0.06) 1px, transparent 1px),
         linear-gradient(90deg, rgba(30,27,75,0.06) 1px, transparent 1px);
       background-size: 28px 28px;
-      border-radius: 8px;
     }
     .zw-welcome > * { position: relative; z-index: 1; }
     .zw-box-dec {
       position: absolute; border-radius: 6px; z-index: 0;
-      background: rgba(30,27,75,0.05); border: 1px solid rgba(30,27,75,0.08);
+      background: rgba(30,27,75,0.05); border: 1px solid rgba(30,27,75,0.09);
     }
     .zw-welcome-avatar {
       width: 54px; height: 54px; border-radius: 16px;
@@ -196,10 +196,14 @@
     </div>
     <div class="zw-messages" id="zw-messages">
       <div class="zw-welcome" id="zw-welcome">
-        <div class="zw-box-dec" style="width:44px;height:44px;top:12px;left:18px;transform:rotate(8deg)"></div>
-        <div class="zw-box-dec" style="width:28px;height:28px;top:28px;right:24px;transform:rotate(-6deg)"></div>
-        <div class="zw-box-dec" style="width:36px;height:36px;bottom:30px;left:12px;transform:rotate(12deg)"></div>
-        <div class="zw-box-dec" style="width:22px;height:22px;bottom:20px;right:16px;transform:rotate(-10deg)"></div>
+        <div class="zw-box-dec" style="width:44px;height:44px;top:10px;left:14px;transform:rotate(8deg)"></div>
+        <div class="zw-box-dec" style="width:28px;height:28px;top:22px;right:20px;transform:rotate(-6deg)"></div>
+        <div class="zw-box-dec" style="width:32px;height:32px;top:25%;left:8px;transform:rotate(14deg)"></div>
+        <div class="zw-box-dec" style="width:20px;height:20px;top:30%;right:12px;transform:rotate(-8deg)"></div>
+        <div class="zw-box-dec" style="width:38px;height:38px;top:52%;left:18px;transform:rotate(-12deg)"></div>
+        <div class="zw-box-dec" style="width:24px;height:24px;top:55%;right:22px;transform:rotate(10deg)"></div>
+        <div class="zw-box-dec" style="width:30px;height:30px;bottom:18px;left:10px;transform:rotate(6deg)"></div>
+        <div class="zw-box-dec" style="width:22px;height:22px;bottom:14px;right:14px;transform:rotate(-14deg)"></div>
         <div class="zw-welcome-avatar">✦</div>
         <h3>Hi, I'm Zara!</h3>
         <p>Ask me anything about CommunityTracker — features, pricing, or which plan fits your team.</p>
@@ -262,10 +266,14 @@
   document.getElementById('zw-new').addEventListener('click', async () => {
     messagesEl.innerHTML = `
       <div class="zw-welcome" id="zw-welcome">
-        <div class="zw-box-dec" style="width:44px;height:44px;top:12px;left:18px;transform:rotate(8deg)"></div>
-        <div class="zw-box-dec" style="width:28px;height:28px;top:28px;right:24px;transform:rotate(-6deg)"></div>
-        <div class="zw-box-dec" style="width:36px;height:36px;bottom:30px;left:12px;transform:rotate(12deg)"></div>
-        <div class="zw-box-dec" style="width:22px;height:22px;bottom:20px;right:16px;transform:rotate(-10deg)"></div>
+        <div class="zw-box-dec" style="width:44px;height:44px;top:10px;left:14px;transform:rotate(8deg)"></div>
+        <div class="zw-box-dec" style="width:28px;height:28px;top:22px;right:20px;transform:rotate(-6deg)"></div>
+        <div class="zw-box-dec" style="width:32px;height:32px;top:25%;left:8px;transform:rotate(14deg)"></div>
+        <div class="zw-box-dec" style="width:20px;height:20px;top:30%;right:12px;transform:rotate(-8deg)"></div>
+        <div class="zw-box-dec" style="width:38px;height:38px;top:52%;left:18px;transform:rotate(-12deg)"></div>
+        <div class="zw-box-dec" style="width:24px;height:24px;top:55%;right:22px;transform:rotate(10deg)"></div>
+        <div class="zw-box-dec" style="width:30px;height:30px;bottom:18px;left:10px;transform:rotate(6deg)"></div>
+        <div class="zw-box-dec" style="width:22px;height:22px;bottom:14px;right:14px;transform:rotate(-14deg)"></div>
         <div class="zw-welcome-avatar">✦</div>
         <h3>Hi, I'm Zara!</h3>
         <p>Ask me anything about CommunityTracker — features, pricing, or which plan fits your team.</p>
