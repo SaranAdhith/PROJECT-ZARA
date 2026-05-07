@@ -13,8 +13,17 @@
       display: flex; align-items: center; justify-content: center;
       transition: transform 0.2s, box-shadow 0.2s;
       overflow: hidden;
+      transform: translateZ(0);
+      will-change: transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
-    #zara-widget-btn:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(0,0,0,0.28); }
+    #zara-widget-btn img {
+      width: 58px; height: 58px; border-radius: 50%; object-fit: cover; display: block;
+      transform: translateZ(0);
+      image-rendering: -webkit-optimize-contrast;
+    }
+    #zara-widget-btn:hover { transform: translateZ(0) scale(1.08); box-shadow: 0 6px 24px rgba(0,0,0,0.28); }
     #zara-widget-btn .zara-close-ico { display: none; font-size: 20px; }
     #zara-widget-btn.open .zara-chat-ico { display: none; }
     #zara-widget-btn.open .zara-close-ico { display: flex; }
@@ -234,7 +243,7 @@
   const btn = document.createElement('button');
   btn.id = 'zara-widget-btn';
   btn.innerHTML = `
-    <span class="zara-chat-ico"><img src="${ICON}" style="width:58px;height:58px;border-radius:50%;object-fit:cover;display:block;"></span>
+    <span class="zara-chat-ico"><img src="${ICON}" alt="Zara"></span>
     <span class="zara-close-ico">✕</span>
   `;
 
