@@ -35,7 +35,7 @@
 
     /* Header */
     .zw-header {
-      background: #1a1a1a;
+      background: #3a3a3a;
       border-bottom: 1px solid rgba(255,255,255,0.08);
       padding: 14px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
     }
