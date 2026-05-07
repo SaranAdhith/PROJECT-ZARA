@@ -8,13 +8,13 @@
     #zara-widget-btn {
       position: fixed; bottom: 24px; right: 24px; z-index: 99998;
       width: 58px; height: 58px; border-radius: 50%;
-      background: #25D366;
-      border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+      background: none; border: none; cursor: pointer;
+      padding: 0; box-shadow: 0 4px 16px rgba(0,0,0,0.2);
       display: flex; align-items: center; justify-content: center;
       transition: transform 0.2s, box-shadow 0.2s;
-      font-size: 26px; color: #fff;
+      overflow: hidden;
     }
-    #zara-widget-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
+    #zara-widget-btn:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(0,0,0,0.28); }
     #zara-widget-btn .zara-close-ico { display: none; font-size: 20px; }
     #zara-widget-btn.open .zara-chat-ico { display: none; }
     #zara-widget-btn.open .zara-close-ico { display: flex; }
@@ -234,7 +234,7 @@
   const btn = document.createElement('button');
   btn.id = 'zara-widget-btn';
   btn.innerHTML = `
-    <span class="zara-chat-ico"><img src="${ICON}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;display:block;"></span>
+    <span class="zara-chat-ico"><img src="${ICON}" style="width:58px;height:58px;border-radius:50%;object-fit:cover;display:block;"></span>
     <span class="zara-close-ico">✕</span>
   `;
 
