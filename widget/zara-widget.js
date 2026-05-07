@@ -50,10 +50,11 @@
       padding: 14px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
     }
     .zw-avatar {
-      width: 36px; height: 36px; border-radius: 10px;
+      width: 36px; height: 36px; border-radius: 50%;
       background: #fff;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; overflow: hidden;
+      border: 1.5px solid rgba(255,255,255,0.3);
     }
     .zw-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .zw-header-info { flex: 1; }
