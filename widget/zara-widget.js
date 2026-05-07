@@ -1,5 +1,6 @@
 (function () {
-  const API = document.currentScript?.dataset.api || 'http://localhost:3001';
+  const API  = document.currentScript?.dataset.api || 'http://localhost:3001';
+  const ICON = 'https://slkkbt56njcjju1f.public.blob.vercel-storage.com/Icon%20only.jpg';
 
   // ── Inject styles ──────────────────────────────────────────────────────────
   const style = document.createElement('style');
@@ -41,10 +42,11 @@
     }
     .zw-avatar {
       width: 36px; height: 36px; border-radius: 10px;
-      background: rgba(255,255,255,0.2);
+      background: #fff;
       display: flex; align-items: center; justify-content: center;
-      font-size: 18px; color: #fff; flex-shrink: 0;
+      flex-shrink: 0; overflow: hidden;
     }
+    .zw-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .zw-header-info { flex: 1; }
     .zw-name { font-size: 14px; font-weight: 700; color: #fff; }
     .zw-status { font-size: 11px; color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 5px; margin-top: 1px; }
@@ -89,12 +91,14 @@
       background: rgba(30,27,75,0.05); border: 1px solid rgba(30,27,75,0.09);
     }
     .zw-welcome-avatar {
-      width: 54px; height: 54px; border-radius: 16px;
-      background: #25D366;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: #fff;
       display: flex; align-items: center; justify-content: center;
-      font-size: 28px; margin-bottom: 4px;
-      box-shadow: 0 8px 24px rgba(37,211,102,0.3);
+      margin-bottom: 4px; overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+      border: 2px solid #E5E7EB;
     }
+    .zw-welcome-avatar img { width: 80%; height: 80%; object-fit: contain; }
     .zw-welcome h3 {
       font-size: 16px; font-weight: 800; margin: 0; color: #1E1B4B;
     }
@@ -115,7 +119,8 @@
       width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center; font-size: 14px;
     }
-    .zw-row.bot .zw-msg-avatar { background: #1E1B4B; color: #fff; }
+    .zw-row.bot .zw-msg-avatar { background: #fff; border: 1px solid #E5E7EB; overflow: hidden; }
+    .zw-row.bot .zw-msg-avatar img { width: 75%; height: 75%; object-fit: contain; }
     .zw-row.user .zw-msg-avatar { background: #F3F4F6; border: 1px solid #E5E7EB; font-size: 10px; font-weight: 700; color: #6B7280; }
     .zw-bubble {
       max-width: 82%; font-size: 13px; line-height: 1.6;
@@ -185,7 +190,7 @@
   panel.id = 'zara-widget-panel';
   panel.innerHTML = `
     <div class="zw-header">
-      <div class="zw-avatar">✦</div>
+      <div class="zw-avatar"><img src="${ICON}" alt="Zara"></div>
       <div class="zw-header-info">
         <div class="zw-name">Zara</div>
         <div class="zw-status"><span class="zw-dot"></span>Online · CommunityTracker.ai</div>
@@ -202,7 +207,7 @@
         <div class="zw-box-dec" style="width:24px;height:24px;top:55%;right:22px;transform:rotate(10deg)"></div>
         <div class="zw-box-dec" style="width:30px;height:30px;bottom:18px;left:10px;transform:rotate(6deg)"></div>
         <div class="zw-box-dec" style="width:22px;height:22px;bottom:14px;right:14px;transform:rotate(-14deg)"></div>
-        <div class="zw-welcome-avatar">✦</div>
+        <div class="zw-welcome-avatar"><img src="${ICON}" alt="Zara"></div>
         <h3>Hi, I'm Zara!</h3>
         <p>Ask me anything about CommunityTracker — features, pricing, or which plan fits your team.</p>
         <div class="zw-chips">
@@ -229,7 +234,7 @@
   const btn = document.createElement('button');
   btn.id = 'zara-widget-btn';
   btn.innerHTML = `
-    <span class="zara-chat-ico">✦</span>
+    <span class="zara-chat-ico"><img src="${ICON}" style="width:34px;height:34px;border-radius:50%;object-fit:cover;display:block;"></span>
     <span class="zara-close-ico">✕</span>
   `;
 
@@ -272,7 +277,7 @@
         <div class="zw-box-dec" style="width:24px;height:24px;top:55%;right:22px;transform:rotate(10deg)"></div>
         <div class="zw-box-dec" style="width:30px;height:30px;bottom:18px;left:10px;transform:rotate(6deg)"></div>
         <div class="zw-box-dec" style="width:22px;height:22px;bottom:14px;right:14px;transform:rotate(-14deg)"></div>
-        <div class="zw-welcome-avatar">✦</div>
+        <div class="zw-welcome-avatar"><img src="${ICON}" alt="Zara"></div>
         <h3>Hi, I'm Zara!</h3>
         <p>Ask me anything about CommunityTracker — features, pricing, or which plan fits your team.</p>
         <div class="zw-chips">
@@ -314,7 +319,7 @@
     const row = document.createElement('div');
     row.className = `zw-row ${role}`;
     row.innerHTML = `
-      <div class="zw-msg-avatar">${role === 'bot' ? '✦' : initials}</div>
+      <div class="zw-msg-avatar">${role === 'bot' ? `<img src="${ICON}" alt="Zara">` : initials}</div>
       <div class="zw-bubble">${text}</div>`;
     messagesEl.appendChild(row);
     messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -329,7 +334,7 @@
     row.className = 'zw-row bot';
     row.id = 'zw-typing-row';
     row.innerHTML = `
-      <div class="zw-msg-avatar">✦</div>
+      <div class="zw-msg-avatar"><img src="${ICON}" alt="Zara"></div>
       <div class="zw-bubble" style="background:#F9FAFB;padding:10px 14px">
         <div class="zw-typing"><span></span><span></span><span></span></div>
       </div>`;
