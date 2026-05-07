@@ -35,10 +35,8 @@
 
     /* Header */
     .zw-header {
-      background: rgba(255,255,255,0.3);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,255,255,0.15);
+      background: #1a1a1a;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       padding: 14px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
     }
     .zw-avatar {
