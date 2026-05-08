@@ -25,11 +25,11 @@
 
     /* Popup bubble */
     #zara-widget-bubble {
-      position: fixed; bottom: 96px; right: 90px; z-index: 99996;
+      position: fixed; bottom: 94px; right: 16px; z-index: 99996;
       background: #fff; border-radius: 14px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.08);
-      padding: 10px 14px 10px 16px;
-      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px 10px 16px;
+      display: flex; align-items: center; gap: 8px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
       font-size: 13.5px; color: #111827; white-space: nowrap;
       opacity: 0; transform: translateY(6px);
@@ -38,9 +38,9 @@
     }
     #zara-widget-bubble.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
     #zara-widget-bubble::after {
-      content: ''; position: absolute; bottom: 14px; right: -6px;
-      width: 12px; height: 12px; background: #fff;
-      clip-path: polygon(0 0, 0 100%, 100% 50%);
+      content: ''; position: absolute; bottom: -7px; right: 24px;
+      width: 14px; height: 7px; background: #fff;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
     }
     #zw-bubble-close {
       background: none; border: none; cursor: pointer;
@@ -275,7 +275,7 @@
 
   const bubble = document.createElement('div');
   bubble.id = 'zara-widget-bubble';
-  bubble.innerHTML = `<span>Hi there! Need Help? 👋</span><button id="zw-bubble-close">✕</button>`;
+  bubble.innerHTML = `<span>👋 Hi! Ask Zara anything</span><button id="zw-bubble-close">✕</button>`;
 
   document.body.appendChild(panel);
   document.body.appendChild(btn);
