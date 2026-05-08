@@ -6,11 +6,14 @@ Zara is an embeddable AI sales assistant that answers visitor questions about [C
 
 ## Screenshots
 
+### Floating Button
+![Zara widget floating button](screenshots/widget-closed.png)
+
 ### Welcome Screen
-![Zara welcome screen](screenshots/welcome.png)
+![Zara welcome screen](screenshots/widget-welcome.png)
 
 ### Live Chat
-![Zara answering a question](screenshots/chat.png)
+![Zara answering a question](screenshots/widget-chat.png)
 
 ---
 
