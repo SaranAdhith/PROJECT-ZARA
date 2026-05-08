@@ -8,9 +8,9 @@
     #zara-widget-btn {
       position: fixed; bottom: 24px; right: 24px; z-index: 99998;
       width: 58px; height: 58px; border-radius: 50%;
-      background: linear-gradient(135deg, #1E1B4B 0%, #4C1D95 100%);
+      background: linear-gradient(135deg, #059669 0%, #10B981 100%);
       border: none; cursor: pointer;
-      padding: 0; box-shadow: 0 4px 16px rgba(0,0,0,0.28);
+      padding: 0; box-shadow: 0 4px 16px rgba(5,150,105,0.4);
       display: flex; align-items: center; justify-content: center;
       transition: transform 0.2s, box-shadow 0.2s;
       transform: translateZ(0);
@@ -18,10 +18,36 @@
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
     }
-    #zara-widget-btn:hover { transform: translateZ(0) scale(1.08); box-shadow: 0 6px 24px rgba(76,29,149,0.45); }
+    #zara-widget-btn:hover { transform: translateZ(0) scale(1.08); box-shadow: 0 6px 24px rgba(5,150,105,0.55); }
     #zara-widget-btn .zara-close-ico { display: none; font-size: 20px; color: #fff; }
     #zara-widget-btn.open .zara-chat-ico { display: none; }
     #zara-widget-btn.open .zara-close-ico { display: flex; }
+
+    /* Popup bubble */
+    #zara-widget-bubble {
+      position: fixed; bottom: 96px; right: 90px; z-index: 99996;
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.08);
+      padding: 10px 14px 10px 16px;
+      display: flex; align-items: center; gap: 10px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 13.5px; color: #111827; white-space: nowrap;
+      opacity: 0; transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+    #zara-widget-bubble.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+    #zara-widget-bubble::after {
+      content: ''; position: absolute; bottom: 14px; right: -6px;
+      width: 12px; height: 12px; background: #fff;
+      clip-path: polygon(0 0, 0 100%, 100% 50%);
+    }
+    #zw-bubble-close {
+      background: none; border: none; cursor: pointer;
+      color: #9CA3AF; font-size: 14px; padding: 0 2px; line-height: 1;
+      transition: color 0.15s;
+    }
+    #zw-bubble-close:hover { color: #111827; }
 
     #zara-widget-panel {
       position: fixed; bottom: 96px; right: 24px; z-index: 99997;
@@ -247,8 +273,22 @@
     <span class="zara-close-ico">✕</span>
   `;
 
+  const bubble = document.createElement('div');
+  bubble.id = 'zara-widget-bubble';
+  bubble.innerHTML = `<span>Hi there! Need Help? 👋</span><button id="zw-bubble-close">✕</button>`;
+
   document.body.appendChild(panel);
   document.body.appendChild(btn);
+  document.body.appendChild(bubble);
+
+  // Show bubble after 1.5s, auto-dismiss after 8s
+  const autoDismiss = setTimeout(() => bubble.classList.remove('visible'), 9500);
+  setTimeout(() => bubble.classList.add('visible'), 1500);
+
+  document.getElementById('zw-bubble-close').addEventListener('click', () => {
+    clearTimeout(autoDismiss);
+    bubble.classList.remove('visible');
+  });
 
   // ── State ──────────────────────────────────────────────────────────────────
   let sessionId = null;
@@ -269,6 +309,7 @@
 
   // ── Toggle ─────────────────────────────────────────────────────────────────
   btn.addEventListener('click', () => {
+    bubble.classList.remove('visible');
     const open = panel.classList.toggle('open');
     btn.classList.toggle('open', open);
     if (open) setTimeout(() => inputEl.focus(), 250);
