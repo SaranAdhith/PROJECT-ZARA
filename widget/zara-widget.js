@@ -8,23 +8,18 @@
     #zara-widget-btn {
       position: fixed; bottom: 24px; right: 24px; z-index: 99998;
       width: 58px; height: 58px; border-radius: 50%;
-      background: none; border: none; cursor: pointer;
-      padding: 0; box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, #1E1B4B 0%, #4C1D95 100%);
+      border: none; cursor: pointer;
+      padding: 0; box-shadow: 0 4px 16px rgba(0,0,0,0.28);
       display: flex; align-items: center; justify-content: center;
       transition: transform 0.2s, box-shadow 0.2s;
-      overflow: hidden;
       transform: translateZ(0);
       will-change: transform;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
     }
-    #zara-widget-btn img {
-      width: 58px; height: 58px; border-radius: 50%; object-fit: cover; display: block;
-      transform: translateZ(0);
-      image-rendering: -webkit-optimize-contrast;
-    }
-    #zara-widget-btn:hover { transform: translateZ(0) scale(1.08); box-shadow: 0 6px 24px rgba(0,0,0,0.28); }
-    #zara-widget-btn .zara-close-ico { display: none; font-size: 20px; }
+    #zara-widget-btn:hover { transform: translateZ(0) scale(1.08); box-shadow: 0 6px 24px rgba(76,29,149,0.45); }
+    #zara-widget-btn .zara-close-ico { display: none; font-size: 20px; color: #fff; }
     #zara-widget-btn.open .zara-chat-ico { display: none; }
     #zara-widget-btn.open .zara-close-ico { display: flex; }
 
@@ -244,7 +239,11 @@
   const btn = document.createElement('button');
   btn.id = 'zara-widget-btn';
   btn.innerHTML = `
-    <span class="zara-chat-ico"><img src="${ICON}" alt="Zara"></span>
+    <span class="zara-chat-ico">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C12 2 12.6 6.4 14.4 8.8C16.2 11.2 22 12 22 12C22 12 16.2 12.8 14.4 15.2C12.6 17.6 12 22 12 22C12 22 11.4 17.6 9.6 15.2C7.8 12.8 2 12 2 12C2 12 7.8 11.2 9.6 8.8C11.4 6.4 12 2 12 2Z"/>
+      </svg>
+    </span>
     <span class="zara-close-ico">✕</span>
   `;
 
