@@ -59,9 +59,24 @@ PROJECT ZARA/
 │   └── package.json
 ├── demo/
 │   └── index.html         # Standalone chat UI — open directly in a browser
-├── widget/                # Embeddable widget (coming soon)
+├── widget/
+│   └── zara-widget.js     # Embeddable widget — drop one script tag into any website
 └── screenshots/           # UI screenshots used in this README
 ```
+
+---
+
+## Widget Integration
+
+Add Zara to any website with a single script tag. Place it before `</body>`:
+
+```html
+<script src="zara-widget.js" data-api="https://YOUR-DEPLOYED-BACKEND-URL"></script>
+```
+
+Replace `https://YOUR-DEPLOYED-BACKEND-URL` with the URL of your deployed backend (e.g. `https://zara-backend.railway.app`).
+
+> **Note:** The backend must be deployed and `ALLOWED_ORIGINS` must include your website's domain for the chat to work. See [Deployment Notes](#deployment-notes) below.
 
 ---
 
