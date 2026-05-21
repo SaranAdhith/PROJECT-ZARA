@@ -2,6 +2,8 @@
 
 Zara is an embeddable AI sales assistant that answers visitor questions about [CommunityTracker.ai](https://communitytracker.ai) in real time. It is powered by **Llama 3.3 70B** running on **Groq**, streamed over Server-Sent Events for instant, token-by-token responses.
 
+The project follows below 
+
 ---
 
 ## Screenshots
